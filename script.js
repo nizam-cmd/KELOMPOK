@@ -554,10 +554,14 @@ scene.onPointerDown = function () {
 scene.registerBeforeRender(function () {
     catRoot.position.z += walkSpeed * walkDirection;
 
-    if (Math.abs(catRoot.position.z) > walkDistance) {
-        catRoot.position.z = -walkDistance * walkDirection;
+    // Perbaikan reset posisi tergantung arah
+    if (walkDirection === 1 && catRoot.position.z > walkDistance) {
+        catRoot.position.z = -walkDistance;
+    } else if (walkDirection === -1 && catRoot.position.z < -walkDistance) {
+        catRoot.position.z = walkDistance;
     }
 });
+
                 return scene;
             };
 
