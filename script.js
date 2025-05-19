@@ -6,6 +6,23 @@ window.addEventListener('DOMContentLoaded', function() {
                 stencil: true
             });
 
+                // INTERAKSI KLIK UNTUK MENGUBAH ARAH
+                var walkDirection = 1; // 1 = maju (positif Z), -1 = mundur
+
+                scene.onPointerDown = function () {
+                    walkDirection *= -1; // Balik arah
+                    // Putar kucing 180 derajat di Y axis
+                    catRoot.rotation.y += Math.PI;
+                };
+
+                scene.registerBeforeRender(function () {
+                    catRoot.position.z += walkSpeed * walkDirection;
+
+                    // Reset posisi kucing jika terlalu jauh
+                    if (Math.abs(catRoot.position.z) > walkDistance) {
+                        catRoot.position.z = -walkDistance * walkDirection;
+                    }
+                });
 
             var createScene = function() {
                 var scene = new BABYLON.Scene(engine);
