@@ -6,24 +6,6 @@ window.addEventListener('DOMContentLoaded', function() {
                 stencil: true
             });
 
-                // INTERAKSI KLIK UNTUK MENGUBAH ARAH
-                var walkDirection = 1; // 1 = maju (positif Z), -1 = mundur
-
-                scene.onPointerDown = function () {
-                    walkDirection *= -1; // Balik arah
-                    // Putar kucing 180 derajat di Y axis
-                    catRoot.rotation.y += Math.PI;
-                };
-
-                scene.registerBeforeRender(function () {
-                    catRoot.position.z += walkSpeed * walkDirection;
-
-                    // Reset posisi kucing jika terlalu jauh
-                    if (Math.abs(catRoot.position.z) > walkDistance) {
-                        catRoot.position.z = -walkDistance * walkDirection;
-                    }
-                });
-
             var createScene = function() {
                 var scene = new BABYLON.Scene(engine);
 
@@ -550,6 +532,32 @@ window.addEventListener('DOMContentLoaded', function() {
                     createGrassStrand(randomX, randomZ, randomHeight, randomThickness, randomRotation);
                 }
 
+                // INTERAKSI KLIK UNTUK MENGUBAH ARAH
+                var walkDirection = 1; // 1 = maju (positif Z), -1 = mundur
+
+                scene.onPointerDown = function () {
+                    walkDirection *= -1; // Balik arah
+                    // Putar kucing 180 derajat di Y axis
+                    catRoot.rotation.y += Math.PI;
+                };
+
+               // Variabel arah jalan
+var walkDirection = 1; // 1 = maju, -1 = mundur
+
+// Event klik untuk mengubah arah
+scene.onPointerDown = function () {
+    walkDirection *= -1;
+    catRoot.rotation.y += Math.PI; // Balik arah
+};
+
+// Render loop dengan kontrol arah
+scene.registerBeforeRender(function () {
+    catRoot.position.z += walkSpeed * walkDirection;
+
+    if (Math.abs(catRoot.position.z) > walkDistance) {
+        catRoot.position.z = -walkDistance * walkDirection;
+    }
+});
                 return scene;
             };
 
